@@ -1,4 +1,4 @@
-- hosts: centos
+- hosts: CentOS Hosts
   become: true
   tasks:
   - name: Ping EC2 Instances
