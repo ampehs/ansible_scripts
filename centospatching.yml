@@ -1,5 +1,5 @@
 ---
-- hosts: centos
+- hosts: CentOS Hosts
   become: true
   tasks:
   - name: update the system
