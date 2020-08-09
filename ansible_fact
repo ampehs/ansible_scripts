@@ -1,0 +1,59 @@
+---
+ - hosts: all
+   tasks:
+   - name: System hostname
+     debug:
+       var=ansible_hostname
+
+   - name: network information
+     vars:
+      msg: |
+       All IP: {{ ansible_default_ipv4 }}
+       Gateway: {{ ansible_default_ipv4.gateway }}
+       All Interface List: {{ ansible_interfaces }}
+     debug:
+      msg: "{{ msg.split('\n') }}"
+
+   - name: System date and time
+     vars:
+      msg: |
+       Date: {{ ansible_date_time.date }}
+       Timezone: {{ ansible_date_time.tz }}
+     debug:
+      msg: "{{ msg.split('\n') }}"
+
+   - name: Hardware information
+     vars:
+      msg: |
+       CPU: {{ ansible_processor }}
+       CPU Core: {{ ansible_processor_cores }}
+       RAM: {{ ansible_memtotal_mb }}
+       SWAP: {{ ansible_memory_mb.swap.total }}
+     debug:
+       msg: "{{ msg.split('\n') }}"
+
+
+   - name: OS and Kernel information
+     vars:
+      msg: |
+       Distribution: {{ ansible_distribution }}
+       Release: {{ ansible_distribution_release }}
+       Distribution Version: {{ ansible_distribution_version }}
+       Kernel: {{ ansible_architecture }}
+       Kernel: {{ ansible_kernel }}
+       Architecture: {{ ansible_architecture }}
+     debug:
+       msg: "{{ msg.split('\n') }}"
+
+   - name: list some packages
+     yum: list={{ item }}
+     with_items:
+     - awslogs
+     - awsagent
+     - NessusAgent
+     - amazon-ssm-agent
+     - awscli
+     - SPlunkForwarder
+     - python34
+     register: out_some
+   - debug: var=out_some
